@@ -1,28 +1,51 @@
-<script setup></script>
+<script setup>
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+
+const currencies = ref([])
+onMounted(async () => {
+    try {
+        const res = await axios.get('http://127.0.0.1:8000/currencies/')
+        currencies.value = res.data
+        console.log(currencies.value);
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+
+</script>
 
 <template>
-    <img src="/logo.png" alt="">
-    <p class="text">Криптовалюты</p>
-    <ul>
-        <li>1asdsa</li>
-        <li>sadasd</li>
-        <li>sdadasdasd</li>
-        <li>wqewqe</li>
-        <li> asdad </li>
-    </ul>
+    <div class="logo">
+        <img src="/logo.png" alt="">
+        <p class="text">Криптовалюты</p>
+    </div>
+
+    <div class="list-group nav"  v-for="currency in currencies" :key="currency.id">
+        <a href="#" class="list-group-item list-group-item-action">{{ currency.name }}</a>
+    </div>
+
+
 </template>
 
 <style scoped>
-ul li {
-    list-style: none;
-    ;
-    font-size: 18px;
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    & .text {
+        font-size: 26px;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
 }
 
-.text {
-    font-size: 33px;
-    font-weight: 600;
-    margin-block: 10px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+.nav {
+    text-align: center;
+    margin-top: 1px;
 }
+
+
 </style>

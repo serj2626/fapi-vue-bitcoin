@@ -13,7 +13,12 @@
           <use xlink:href="#bootstrap"></use>
         </svg>
       </a>
-      <span class="text-muted">© 2021 Company, Inc</span>
+      <span class="text-muted"
+        >© 2024 
+        <a class="link-github" href="https://github.com/serj2626" target="_blank">
+          Boytsov S.V.</a>
+           SPB</span
+      >
     </div>
 
     <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
@@ -44,5 +49,9 @@ footer {
   position: absolute;
   bottom: 0;
   width: 80%;
+}
+.link-github {
+  color: orange;
+  text-decoration: none;
 }
 </style>
