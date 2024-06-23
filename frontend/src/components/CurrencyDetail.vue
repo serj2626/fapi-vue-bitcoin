@@ -1,17 +1,31 @@
 <script setup>
 import axios from 'axios';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
+
 let props = defineProps({
     id: Number
 })
 
 const currency = ref({})
 
+const getCurrency = async () => {
+    try {
+        const res = await axios.get(`http://127.0.0.1:8000/currencies/${props.id}/`)
+        currency.value = res.data
+        console.log(currency.value);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+onMounted(getCurrency())
+
+
 </script>
 
 
 <template>
-    <div class="card mb-3" style="max-width: 540px">
+    <div class="card shadow-lg mb-3" style="max-width: 540px">
         <div class="row g-0">
             <div class="col-md-4">
                 <img src="..." class="img-fluid rounded-start" alt="..." />
