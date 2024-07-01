@@ -1,24 +1,25 @@
 <script setup>
 import axios from 'axios';
-import { ref, onMounted, watchEffect } from 'vue';
+import { ref, watchEffect, onMounted } from 'vue';
 
 let props = defineProps({
     id: Number
 })
 
 const currency = ref({})
-
+const price = ref(0)
 const getCurrency = async () => {
     try {
         const res = await axios.get(`http://127.0.0.1:8000/currencies/${props.id}/`)
+        console.log(res.data);
+        price.value = res.data.quote['USD'].price
         currency.value = res.data
-        console.log(currency.value);
     } catch (err) {
         console.log(err);
     }
 }
 
-onMounted(getCurrency())
+watchEffect(getCurrency)
 
 
 </script>
@@ -28,18 +29,19 @@ onMounted(getCurrency())
     <div class="card shadow-lg mb-3" style="max-width: 540px">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="..." class="img-fluid rounded-start" alt="..." />
+                <img  class="img-fluid rounded-start" alt="..." />
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
+                    <h5 class="card-title">{{ currency.name }}</h5>
                     <p class="card-text">
-                        This is a wider card with supporting text below as a natural
-                        lead-in to additional content. This content is a little bit
-                        longer.
+                     {{ price }}
                     </p>
                     <p class="card-text">
-                        <small class="text-muted">Last updated 3 mins ago</small>
+                        <small class="text-muted">{{ currency.date_added }}</small>
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">{{ currency.last_updated }}</small>
                     </p>
                 </div>
             </div>

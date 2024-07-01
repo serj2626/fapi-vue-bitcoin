@@ -4,29 +4,34 @@ import Footer from "./components/Footer.vue";
 import CurrencyDetail from "./components/CurrencyDetail.vue";
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
+import Spinner from "./components/Spinner.vue";
 
-const currencies = ref([])
-const getCurrency = async () => {
-  try {
-    const res = await axios.get('http://127.0.0.1:8000/currencies/')
-    currencies.value = res.data
-    console.log(currencies.value);
-  } catch (err) {
-    console.log(err);
-  }
+
+const idCurrency = ref(null)
+
+
+const updateIDCurrency = (value) => {
+  idCurrency.value = value
 }
-onMounted(getCurrency())
 
 </script>
 
 <template>
   <div class="left">
+    <KeepAlive include="CurrencyList">
+      <CurrencyList @getCurrency="updateIDCurrency($event)" />
+    </KeepAlive>
 
   </div>
   <div class="right">
     <div class="container">
       <div class="row">
-        <CurrencyDetail />
+        <div v-if="idCurrency">
+          <CurrencyDetail :id="idCurrency" />
+        </div>
+        <div v-else>
+          <Spinner />
+        </div>
       </div>
     </div>
     <Footer />
@@ -49,6 +54,6 @@ onMounted(getCurrency())
   margin-left: 20%;
   padding: 40px;
   min-height: 100vh;
-  background-color: #e6e1e1;
+  background-color: #baa5a586;
 }
 </style>

@@ -1,17 +1,20 @@
 <script setup>
 import axios from 'axios';
-import { ref, onMounted } from 'vue';
-
+import { ref, onMounted, defineEmits } from 'vue';
 const currencies = ref([])
-onMounted(async () => {
-    try {
-        const res = await axios.get('http://127.0.0.1:8000/currencies/')
-        currencies.value = res.data
-        console.log(currencies.value);
-    } catch (err) {
-        console.log(err);
-    }
-})
+
+const emit = defineEmits(['getCurrency'])
+
+const getCurrency = async () => {
+  try {
+    const res = await axios.get('http://127.0.0.1:8000/currencies/')
+    currencies.value = res.data
+    console.log(currencies.value);
+  } catch (err) {
+    console.log(err);
+  }
+}
+onMounted(getCurrency)
 
 
 </script>
@@ -22,11 +25,11 @@ onMounted(async () => {
         <p class="text">Криптовалюты</p>
     </div>
 
-    <div class="list-group nav"  v-for="currency in currencies" :key="currency.id">
-        <a href="#" class="list-group-item list-group-item-action">{{ currency.name }}</a>
+    <div class="list-group nav" v-for="currency in currencies" :key="currency.id">
+        <a 
+        @click="emit('getCurrency', currency.id)"
+        class="list-group-item list-group-item-action">{{currency.name }}</a>
     </div>
-
-
 </template>
 
 <style scoped>
@@ -46,6 +49,4 @@ onMounted(async () => {
     text-align: center;
     margin-top: 1px;
 }
-
-
 </style>
