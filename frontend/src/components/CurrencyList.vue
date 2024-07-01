@@ -6,13 +6,14 @@ const currencies = ref([])
 const emit = defineEmits(['getCurrency'])
 
 const getCurrency = async () => {
-  try {
-    const res = await axios.get('http://127.0.0.1:8000/currencies/')
-    currencies.value = res.data
-    console.log(currencies.value);
-  } catch (err) {
-    console.log(err);
-  }
+    try {
+        let res = await axios.get('http://127.0.0.1:8000/currencies/')
+        res = await res.data
+        currencies.value = res
+        console.log(currencies.value);
+    } catch (err) {
+        console.log(err);
+    }
 }
 onMounted(getCurrency)
 
@@ -26,9 +27,8 @@ onMounted(getCurrency)
     </div>
 
     <div class="list-group nav" v-for="currency in currencies" :key="currency.id">
-        <a 
-        @click="emit('getCurrency', currency.id)"
-        class="list-group-item list-group-item-action">{{currency.name }}</a>
+        <a @click="emit('getCurrency', currency.id)" class="list-group-item list-group-item-action">{{ currency.name
+            }}</a>
     </div>
 </template>
 
